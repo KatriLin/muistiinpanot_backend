@@ -66,6 +66,7 @@ let notes = [
     const note = {
       content: body.content,
       important: body.important || false,
+      date: new Date(),
       id: generateId(),
     }
   
@@ -77,25 +78,26 @@ let notes = [
   app.get('/api/notes/:id', (request, response) => {
     const id = Number(request.params.id)
     const note = notes.find(note => note.id === id)
-   
+  
     if (note) {
-        response.json(note)
-      } else {
-        response.status(404).end()
-      }
+      response.json(note)
+    } else {
+      response.status(404).end()
+    }
+  
+    response.json(note)
   })
-
+  
   app.delete('/api/notes/:id', (request, response) => {
     const id = Number(request.params.id)
     notes = notes.filter(note => note.id !== id)
   
     response.status(204).end()
   })
-
+  
   app.use(unknownEndpoint)
-
+  
   const PORT = process.env.PORT || 3001
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
   })
- 
